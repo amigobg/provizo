@@ -50,6 +50,9 @@ gem "image_processing", "~> 1.2"
 gem 'devise', '~> 4.9', '>= 4.9.3'
 gem "omniauth-rails_csrf_protection"
 gem "omniauth-google-oauth2", "~> 1.1", ">= 1.1.1"
+gem "kaminari"
+gem "kaminari-i18n"
+gem "money-rails", "~> 1.15"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
