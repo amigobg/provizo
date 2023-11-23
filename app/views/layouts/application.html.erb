@@ -8,12 +8,18 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    
+    <%= yield(:head) %>
   </head>
 
   <body class="bg-body-tertiary">
     <%= render ('layouts/shared/navbar') %>
     
-    <%= yield %>
+    <div class="container">
+      <main role="main">
+        <%= yield(:content) %>
+      </main>
+    </div>
     
     <%= render ('layouts/shared/footer') %>
   </body>
