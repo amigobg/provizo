@@ -6,5 +6,74 @@
     <h2>Adding new product</h2>
     <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
   </div>
-  <%= render ('form') %>
+  <%= form_with(model: @product, local: true) do |form| %>
+    <div class="row g-5">
+      <div class="col-md-12">
+        <div class="row g-3">
+          <!-- Barcode Field -->
+          <div class="col-12">
+            <%= form.label :barcode, class: "form-label" %><span class="text-primary">*</span>
+            <div class="input-group has-validation">
+              <span class="input-group-text">#</span>
+              <%= form.number_field :barcode, class: "form-control", placeholder: "Product barcode", required: true %>
+            </div>
+          </div>
+          <!-- Title Field -->
+          <div class="col-6">
+            <%= form.label :title, class: "form-label" %><span class="text-primary">*</span>
+            <%= form.text_field :title, class: "form-control", placeholder: "Full product name", required: true %>
+          </div>
+          <!-- Category Field -->
+          <div class="col-md-3">
+            <%= form.label :category, class: "form-label" %><span class="text-primary">*</span>
+            <%= form.collection_select :category_id, Category.all, :id, :title, { include_blank: "Select category" }, { class: "form-select", required: true } %>
+          </div>
+          <!-- Image Upload Field -->
+          <div class="col-md-3">
+            <%= form.label :image, class: "form-label" %>
+            <%= form.file_field :image, class: "form-control", id: "image-2", accept: "image/gif, image/jpeg, image/png" %>
+          </div>
+          <!-- Description Field -->
+          <div class="col-md-12">
+            <%= form.label :description, class: "form-label" %>
+            <%= form.text_area :description, size: "70x5", class: "form-control" %>
+          </div>
+          <hr class="my-3">
+          <!-- Nested Price Entries Fields -->
+
+          <%= form.fields_for :price_entries_attributes do |price_entry| %>
+            <!-- Currency Field -->
+            <div class="col-md-2">
+              <%= price_entry.label :currency, class: "form-label" %><span class="text-primary">*</span>
+              <%= price_entry.select :currency, options_for_select(['BGN', 'EUR', 'USD']), { include_blank: "Select currency" }, { class: "form-select", required: true } %>
+            </div>
+            <!-- Price Field -->
+            <div class="col-sm-3">
+              <%= price_entry.label :price, class: "form-label" %><span class="text-primary">*</span>
+              <%= price_entry.number_field :price, class: "form-control", placeholder: "Regular price", required: true %>
+            </div>
+            <!-- Promotional Price Field -->
+            <div class="col-sm-3">
+              <%= price_entry.label :promo_price, class: "form-label" %> <span class="text-body-secondary">(Optional)</span>
+              <%= price_entry.number_field :promo_price, class: "form-control", placeholder: "Promotional price" %>
+            </div>
+            <!-- Store Selection Field -->
+            <div class="col-md-4">
+              <%= price_entry.label :store_id, class: "form-label" %><span class="text-primary">*</span>
+              <%= price_entry.collection_select :store_id, Store.all, :id, :name, { include_blank: "Select store" }, { class: "form-select", required: true } %>
+            </div>
+          <% end %>
+          <!-- Agreement Checkbox -->
+          <div class="form-check mt-4 mb-4">
+            <input type="checkbox" id="agreement" class="form-check-input" required>
+            <label for="agreement">I understand and agree to these terms.</label>
+          </div>
+          <!-- Submit Button -->
+          <%= form.button(type: 'submit', name: "commit", class: "w-100 btn btn-primary btn-lg") do %>
+            <i class="bi bi-plus fa-fw me-2"></i>Add product
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 <% end %>

@@ -6,7 +6,7 @@ class Product < ApplicationRecord
   
   has_one_attached :image, dependent: :destroy
   
-  accepts_nested_attributes_for :price_entries
+  accepts_nested_attributes_for :price_entries, allow_destroy: true
   
   validates :title, presence: true
   validates_uniqueness_of :barcode, on: :create

@@ -9,6 +9,13 @@ class PriceEntry < ApplicationRecord
   validate :price_greater_than_promo_price
   validate :valid_promo_date_range
   
+  scope :cheapest, -> {
+    select("price_entries.*, CASE
+      WHEN promo_price_cents IS NOT NULL AND promo_price_cents < price_cents THEN promo_price_cents
+      ELSE price_cents
+    END AS actual_price_cents")
+    .order("actual_price_cents ASC")
+  }
   
   private
     def price_greater_than_promo_price

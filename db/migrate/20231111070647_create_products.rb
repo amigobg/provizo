@@ -5,6 +5,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
        t.text    :description
        t.string  :brand
        t.integer :barcode
+       t.integer :category_id
 
        t.timestamps
     end
