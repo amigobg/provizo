@@ -23,7 +23,7 @@
         <!-- Pricing Information Section -->
         <div>
           <h3 class="fw-bold mb-3">Offers</h3>
-          <% cheapest_price_entry_id = @product.price_entries.cheapest.first.id %>
+          <% cheapest_price_entry_id = nil %>
           <% @product.price_entries.cheapest.each do |price_entry| %>
             <div class="card mb-3">
               <div class="card-body">

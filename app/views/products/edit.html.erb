@@ -1,9 +1,12 @@
-<% content_for :title do %>
-  <%= @product.title %>
-<% end %>
 <% content_for :content do %>
-  <div class="py-5 text-center">
-    <h2><%= @product.title %></h2>
-  </div>
-  <%= render ('form') %>
+<h1>Editing product</h1>
+
+<%= render "form", product: @product %>
+
+<br>
+
+<div>
+  <%= link_to "Show this product", @product %> |
+  <%= link_to "Back to products", products_path %>
+</div>
 <% end %>
