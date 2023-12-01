@@ -1,5 +1,5 @@
 class PriceEntry < ApplicationRecord
-  belongs_to :product
+  belongs_to :product, touch: true
   belongs_to :store
   
   monetize :price_cents, with_model_currency: :currency, numericality: { greater_than_or_equal_to: 0 }
@@ -8,6 +8,8 @@ class PriceEntry < ApplicationRecord
   validates :currency, presence: true
   validate :price_greater_than_promo_price
   validate :valid_promo_date_range
+  
+  broadcasts_refreshes
   
   scope :cheapest, -> {
     select("price_entries.*, CASE
