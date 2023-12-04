@@ -6,10 +6,8 @@ class Product < ApplicationRecord
   
   has_one_attached :image, dependent: :destroy
   
-  accepts_nested_attributes_for :price_entries, allow_destroy: true
-  
   validates :title, presence: true
-  validates_uniqueness_of :barcode, on: :create
+  validates :barcode, uniqueness: { scope: :store_id }
   
   broadcasts_refreshes
 end

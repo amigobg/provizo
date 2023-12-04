@@ -19,6 +19,8 @@ class PriceEntry < ApplicationRecord
     .order("actual_price_cents ASC")
   }
   
+  scope :recent, -> { order(created_at: :desc) }
+  
   private
     def price_greater_than_promo_price
       return if promo_price.blank? || price.blank?

@@ -21,7 +21,9 @@ class ProductsController < ApplicationController
 
   # POST /products or /products.json
   def create
+    puts "222222222222 #{product_params}"
     @product = Product.new(product_params)
+    puts "22222222222222222222 #{@product.inspect}"
 
     respond_to do |format|
       if @product.save
@@ -63,7 +65,7 @@ class ProductsController < ApplicationController
     end
 
     def product_params                                                     
-      params.require(:product).permit(:title, :description, :brand, :barcode, :image, :category_id, 
+      params.require(:product).permit(:title, :description, :brand, :barcode, :image, category_ids: [], 
         price_entries_attributes: [:id, :price, :promo_price, :currency, :store_id]
       )
     end
