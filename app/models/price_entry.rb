@@ -11,30 +11,24 @@ class PriceEntry < ApplicationRecord
   
   broadcasts_refreshes
   
-  scope :cheapest, -> {
-    select("price_entries.*, CASE
-      WHEN promo_price_cents IS NOT NULL AND promo_price_cents < price_cents THEN promo_price_cents
-      ELSE price_cents
-    END AS actual_price_cents")
-    .order("actual_price_cents ASC")
+  scope :cheapest, -> { 
+    where("promo_price_cents IS NULL OR promo_price_cents >= price_cents")
+    .order(price_cents: :asc) 
   }
-  
+
   scope :recent, -> { order(created_at: :desc) }
-  
+
   private
     def price_greater_than_promo_price
-      return if promo_price.blank? || price.blank?
+      return if promo_price.blank? || price.blank? || price > promo_price
 
-      if price <= promo_price
-        errors.add(:price, 'must be greater than promo price')
-      end
+      errors.add(:price, 'must be greater than promo price')
     end
     
     def valid_promo_date_range
       return if promo_price_active_from.blank? || promo_price_active_to.blank?
+      return if promo_price_active_from < promo_price_active_to
 
-      if promo_price_active_from >= promo_price_active_to
-        errors.add(:promo_price_active_from, 'must be before the end date')
-      end
+      errors.add(:promo_price_active_from, 'must be before the end date')
     end
 end
